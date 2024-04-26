@@ -21,6 +21,16 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+
+    const database = client.db("artCraftDB");
+    const craftCollections = database.collection("crafts");
+
+    app.post('/addCrafts',async (req,res)=>{
+        const newCraft = req.body
+        console.log(newCraft);
+        const result = await craftCollections.insertOne(newCraft)
+        res.send(result)
+    })
     
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
