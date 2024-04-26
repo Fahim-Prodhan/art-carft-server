@@ -25,6 +25,12 @@ async function run() {
     const database = client.db("artCraftDB");
     const craftCollections = database.collection("crafts");
 
+    app.get('/crafts',async(req,res)=>{
+        const allCrafts = craftCollections.find();
+        const result = await allCrafts.toArray();
+        res.send(result)
+    })
+
     app.post('/addCrafts',async (req,res)=>{
         const newCraft = req.body
         console.log(newCraft);
