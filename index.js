@@ -31,6 +31,14 @@ async function run() {
         res.send(result)
     })
 
+    app.get("/crafts/:user_email", async (req, res) => {
+        const email = req.params.user_email;
+        const query = { user_email: email };
+        const usersCrafts =  craftCollections.find(query);
+        const result = await usersCrafts.toArray();
+        res.send(result);
+      });
+
     app.post('/addCrafts',async (req,res)=>{
         const newCraft = req.body
         console.log(newCraft);
