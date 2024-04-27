@@ -39,6 +39,14 @@ async function run() {
         res.send(result);
       });
 
+
+    app.get("/crafts/details/:id", async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await craftCollections.findOne(query);
+        res.send(result);
+      });
+
     app.post('/addCrafts',async (req,res)=>{
         const newCraft = req.body
         console.log(newCraft);
