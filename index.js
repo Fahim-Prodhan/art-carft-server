@@ -24,10 +24,17 @@ async function run() {
 
     const database = client.db("artCraftDB");
     const craftCollections = database.collection("crafts");
+    const subcategoryCollections = database.collection("subcategory");
 
     app.get('/crafts',async(req,res)=>{
         const allCrafts = craftCollections.find();
         const result = await allCrafts.toArray();
+        res.send(result)
+    })
+
+    app.get('/subcategories',async(req,res)=>{
+        const allSubcategories = subcategoryCollections.find();
+        const result = await allSubcategories.toArray();
         res.send(result)
     })
 
