@@ -64,22 +64,59 @@ async function run() {
     });
 
     // Filter according to customization
-    app.get('/crafts/filter/:value', async(req, res)=>{
-      const value = req.params.value 
-      const query = {customization: value}
-      const filteredCraft = craftCollections.find(query)
-      const result = await filteredCraft.toArray()
-      res.send(result)
+    app.get("/crafts/filter/:value", async (req, res) => {
+      const value = req.params.value;
+      const query = { customization: value };
+      const filteredCraft = craftCollections.find(query);
+      const result = await filteredCraft.toArray();
+      res.send(result);
+    });
 
-    })
+    // Filter and Get the craft according to subcategory
+    app.get("/crafts/subcategory/filter/:value", async (req, res) => {
+      const value = req.params.value;
+      const query = { subcategory_name: value };
+      const filteredCraft = craftCollections.find(query);
+      const result = await filteredCraft.toArray();
+      res.send(result);
+    });
 
-    // delete a craft 
-    app.delete('/crafts/:id', async (req,res)=>{
-      const id = req.params.id 
-      const query = {_id: new ObjectId(id)}
-      const result = await craftCollections.deleteOne(query)
-      res.send(result)
-    })
+    // delete a craft
+    app.delete("/crafts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await craftCollections.deleteOne(query);
+      res.send(result);
+    });
+
+    app.put("/crafts/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const craft = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+
+      const updateCraft = {
+        $set: {
+          image: craft.image,
+          item_name: craft.item_name,
+          subcategory_name: craft.subcategory_name,
+          short_description: craft.short_description,
+          price: craft.price,
+          rating: craft.rating,
+          stock_status: craft.stock_status,
+          processing_time: craft.processing_time,
+          user_email: craft.user_email,
+          user_name: craft.user_name,
+          customization: craft.customization
+        },
+      };
+
+      const result = await craftCollections.updateOne(filter, updateCraft, options);
+      res.send(result);
+
+
+    });
+
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
