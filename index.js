@@ -63,6 +63,16 @@ async function run() {
       res.send(result);
     });
 
+    // Filter according to customization
+    app.get('/crafts/filter/:value', async(req, res)=>{
+      const value = req.params.value 
+      const query = {customization: value}
+      const filteredCraft = craftCollections.find(query)
+      const result = await filteredCraft.toArray()
+      res.send(result)
+
+    })
+
     // delete a craft 
     app.delete('/crafts/:id', async (req,res)=>{
       const id = req.params.id 
