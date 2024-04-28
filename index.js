@@ -64,9 +64,11 @@ async function run() {
     });
 
     // Filter according to customization
-    app.get("/crafts/filter/:value", async (req, res) => {
+    app.get("/crafts/filter/:value/:email", async (req, res) => {
       const value = req.params.value;
-      const query = { customization: value };
+      const email = req.params.email;
+      const query = { customization: value, user_email:email };
+      // console.log(query);
       const filteredCraft = craftCollections.find(query);
       const result = await filteredCraft.toArray();
       res.send(result);
@@ -105,8 +107,6 @@ async function run() {
           rating: craft.rating,
           stock_status: craft.stock_status,
           processing_time: craft.processing_time,
-          user_email: craft.user_email,
-          user_name: craft.user_name,
           customization: craft.customization
         },
       };
